@@ -1,0 +1,22 @@
+<html>
+<head>
+<body>
+<h1>Get Notified</h1>
+</body>
+<script src="/interview-task/client/socket.io.js"></script>
+<script>
+  const socket = io("http://localhost:3000", { query: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiY3JlYXRlZEF0IjoiMjAyMS0xMS0xMVQxMTo1NTo1Ni4zMzRaIiwidXBkYXRlZEF0IjoiMjAyMS0xMS0xMVQxMTo1NTo1Ni4zMzRaIiwibmFtZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjM2NjU4Njg5LCJleHAiOjE2MzY2NjU4ODl9.mXgqX153AuRZ-ufOhck-l7E5wHZWsRjcRtBANb6_Ktg" });
+  socket.on("receive-message", function(data) {
+    console.log("event", data);
+  });
+  socket.on("exception", function(data) {
+    console.log("event", data);
+  });
+  socket.on("disconnect", function() {
+    console.log("Disconnected");
+  });
+</script>
+</head>
+
+<body></body>
+</html>
