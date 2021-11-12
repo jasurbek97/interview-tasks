@@ -1,7 +1,5 @@
 import {
-  ConnectedSocket,
   OnGatewayConnection,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
@@ -21,15 +19,12 @@ export class NotifyGateway implements OnGatewayConnection {
 
   async handleConnection(client: Socket) {
     const user = await this.authService.getUserFromSocket(client);
-    !user && client.disconnect();
-  }
-
-  @SubscribeMessage('receive-message')
-  async handleNotifyEvent(@ConnectedSocket() socket: Socket) {
-    const receiver = await this.authService.getUserFromSocket(socket);
-    const messages = await this.messageService.allMessages(receiver);
-    this.server.sockets.emit('receive-message', {
-      messages,
+    const messages = await this.messageService.allMessages(user);
+    client.emit('receive_message', {
+      data: messages,
+    });
+    client.emit('user', {
+      data: user,
     });
   }
 }

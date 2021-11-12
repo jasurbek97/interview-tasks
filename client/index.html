@@ -3,12 +3,25 @@
 <body>
 <h1>Get Notified</h1>
 </body>
-<script src="/interview-task/client/socket.io.js"></script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script>
-  const socket = io("http://localhost:3000", { query: "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiY3JlYXRlZEF0IjoiMjAyMS0xMS0xMVQxMTo1NTo1Ni4zMzRaIiwidXBkYXRlZEF0IjoiMjAyMS0xMS0xMVQxMTo1NTo1Ni4zMzRaIiwibmFtZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjM2NjU4Njg5LCJleHAiOjE2MzY2NjU4ODl9.mXgqX153AuRZ-ufOhck-l7E5wHZWsRjcRtBANb6_Ktg" });
-  socket.on("receive-message", function(data) {
-    console.log("event", data);
+  const socket = io("http://localhost:3000/notify", {
+    withCredentials: true,
+    auth: {
+      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiY3JlYXRlZEF0IjoiMjAyMS0xMS0xMVQxMTo1NTo1Ni4zMzRaIiwidXBkYXRlZEF0IjoiMjAyMS0xMS0xMVQxMTo1NTo1Ni4zMzRaIiwibmFtZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjM2NzAwODI0LCJleHAiOjE2MzY3MDgwMjR9.yCmguAgkb7tPobaCKEQKK9IOHlzoYG0NVezXnhkcoLM"
+    },
+    transports: ["websocket"],
+    extraHeaders: {
+      "my-custom-header": "abcd"
+    }
   });
+  socket.on("user", function(data) {
+    console.log("user", data);
+  });
+  socket.on("receive_message", function(data) {
+    console.log("messages", data);
+  });
+
   socket.on("exception", function(data) {
     console.log("event", data);
   });

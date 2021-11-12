@@ -5,7 +5,6 @@ import { JwtService } from '@nestjs/jwt';
 import { UserInterface } from '../users/interfaces/user.interface';
 import { Socket } from 'socket.io';
 import { WsException } from '@nestjs/websockets';
-import { parse } from 'cookie';
 import { JWT_SECRET } from '../../environments';
 import { TokenPayloadInterface } from './interfaces/token.interface';
 
@@ -26,8 +25,7 @@ export class AuthService {
   }
 
   async getUserFromSocket(socket: Socket): Promise<UserInterface> {
-    const cookie = socket.handshake.headers.cookie;
-    const { Authentication: token } = parse(cookie);
+    const token = socket.handshake.auth.token;
     const user = await this.getUserFromToken(token);
     if (!user) {
       throw new WsException('Invalid credentials.');
